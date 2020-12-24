@@ -2,6 +2,10 @@ const {ApolloServer} = require('apollo-server');
 const fs = require('fs');
 const path = require('path');
 const {PrismaClient} = require('@prisma/client')
+const {PubSub} = require('spollo-server')
+const Subscription = require('./subscription')
+
+const pubsub = new PubSub()
 
 let links = [{
     id: 'link-0',
@@ -54,7 +58,9 @@ const resolvers = {
             return link
            // let links = links.filter((link) => !(link.id = id) )
         }
-    }
+    },
+
+
 
 }
 
@@ -66,8 +72,15 @@ const server = new ApolloServer({
         'utf8'
     ),
     resolvers,
-    context: {
-        prisma,
+    context: ({req}) => {
+        return {
+            ...req,
+            prisma,
+            pubsub,
+            userId:
+                req && req.headers.authorization ? getUserId(req) : null
+
+        };
     }
 })
 
