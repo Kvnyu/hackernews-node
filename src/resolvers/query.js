@@ -10,8 +10,7 @@ async function link (parent, args, context) {
     return link
 }
 
-module.exports({
-    info,
+module.exports = {
     feed,
     link
-})
+}

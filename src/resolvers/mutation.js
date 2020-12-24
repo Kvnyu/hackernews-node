@@ -78,5 +78,7 @@ async function login(parent, args, context,info) {
 module.exports = {
     updateLink,
     deleteLink,
-    post
+    post,
+    signup,
+    login
 }

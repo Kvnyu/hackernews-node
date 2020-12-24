@@ -8,6 +8,7 @@ const Query = require('./resolvers/query')
 const Mutation = require('./resolvers/mutation')
 const User = require('./resolvers/user')
 const Link = require('./resolvers/link')
+const {getUserId} = require('./utils')
 
 
 
@@ -21,52 +22,10 @@ let links = [{
 let idCount = links.length
 
 const resolvers = {
-    Query: {
-        info: () => "This is a Hackernews clone",
-        feed: () => async (parent, args, context) => {
-            feed = await context.prisma.link.findMany()
-            return feed
-        },
-        link: async (parent, args, context) => {
-            link = await context.prisma.link.findFirst({
-                    where: {id: parseInt(args.id)},
-                }
-            )
-            return link
-
-        }
-    },
-    Mutation: {
-        post: async (parent, args, context) => {
-            const link = await prisma.link.create({
-                data: {
-                    description: args.description,
-                    url: args.url
-                }
-            })
-            return link
-        },
-        updateLink: async (parent, args, context) => {
-            const link = await prisma.link.update({
-                where: {id: parseInt(args.id)},
-                data:{
-                    description: args.description,
-                    url: args.url,
-                }
-            })
-            return link
-
-        },
-        deleteLink: async (parent, args, context) => {
-            const link = await prisma.link.delete({
-                where: {id:parseInt(args.id)}
-            })
-            return link
-           // let links = links.filter((link) => !(link.id = id) )
-        }
-    },
-
-
+   Query,
+   Mutation,
+   User,
+   Link
 
 }
 
