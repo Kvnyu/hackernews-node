@@ -1,7 +1,5 @@
-function info(){return "This is a Hackernews clone"}
-
-async function feed(parent, args, context){
-    feed = await context.prisma.link.findMany()
+function feed(parent, args, context){
+    feed = context.prisma.link.findMany()
     return feed
 }
 

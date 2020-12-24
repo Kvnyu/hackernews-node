@@ -2,8 +2,14 @@ const {ApolloServer} = require('apollo-server');
 const fs = require('fs');
 const path = require('path');
 const {PrismaClient} = require('@prisma/client')
-const {PubSub} = require('spollo-server')
-const Subscription = require('./subscription')
+const {PubSub} = require('apollo-server')
+
+const Query = require('./resolvers/query')
+const Mutation = require('./resolvers/mutation')
+const User = require('./resolvers/user')
+const Link = require('./resolvers/link')
+
+
 
 const pubsub = new PubSub()
 
