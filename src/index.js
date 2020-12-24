@@ -14,55 +14,45 @@ const resolvers = {
     Query: {
         info: () => "This is a Hackernews clone",
         feed: () => async (parent, args, context) => {
-            return context.prisma.link.findMany()
+            feed = await context.prisma.link.findMany()
+            return feed
         },
-        link: (parent, args) => {
-            let link = links.filter(
-                (link) => (link.id == args.id)
+        link: async (parent, args, context) => {
+            link = await context.prisma.link.findFirst({
+                    where: {id: parseInt(args.id)},
+                }
             )
-            console.log(link)
-            return link[0]
-            // console.log(id)
-            // console.log( links.filter((link) => link.id = id))
-            // return links.filter((link) => link.id = id)[0]
+            return link
 
         }
     },
     Mutation: {
-        post: (parent, args) => {
-            const link = {
-                id: `link-${idCount++}`,
-                description: args.description,
-                url: args.url
-
-            }
-            links.push(link)
-            return link
-        },
-        updateLink: (parent, args) => {
-            var updated = false
-            updatedLink = {
-                id: args.id,
-                url: args.url,
-                description: args.description
-            }
-            links.forEach((link) => {
-                console.log(link)
-                if (link.id == args.id) {
-                    link.id = args.id,
-                        link.url = args.url,
-                    link.description = args.description
-                    updated = true
-                    return link
-                }
-                else{
-                    return link
+        post: async (parent, args, context) => {
+            const link = await prisma.link.create({
+                data: {
+                    description: args.description,
+                    url: args.url
                 }
             })
-            return updated ? updatedLink : "Failed to update"
+            return link
         },
-        deleteLink: (parent, args) => {
-           let links = links.filter((link) => !(link.id = id) )
+        updateLink: async (parent, args, context) => {
+            const link = await prisma.link.update({
+                where: {id: parseInt(args.id)},
+                data:{
+                    description: args.description,
+                    url: args.url,
+                }
+            })
+            return link
+
+        },
+        deleteLink: async (parent, args, context) => {
+            const link = await prisma.link.delete({
+                where: {id:parseInt(args.id)}
+            })
+            return link
+           // let links = links.filter((link) => !(link.id = id) )
         }
     }
 
