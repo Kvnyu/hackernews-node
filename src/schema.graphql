@@ -18,6 +18,7 @@ type Link {
     description: String!
     url: String!
     postedBy: User
+
 }
 
 type Subscription{
