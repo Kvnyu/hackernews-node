@@ -10,6 +10,21 @@ async function link (parent, args, context) {
     return link
 }
 
+async function feed (parent, args, context, info){
+    const where = args.filter ? {
+        OR: [
+            {description: { contains: args.filter }},
+            {url : {contains: args.filter}},
+        ]
+
+    }: {}
+    //The above creates the filter for the prisma query
+    const links = await context.prisma.link.findMany({
+        where,
+    })
+    return links
+}
+
 module.exports = {
     feed,
     link
