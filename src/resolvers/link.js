@@ -5,8 +5,20 @@ async function postedBy(parent,args,context){
     return user
 }
 
+async function votes(parent, args, context) {
+    let votes = await context.prisma.link.findUnique({where:{linkId:parent.id}}).votes()
+    return votes
+        //parent.id is the parent resolver that calls this function
+    //In this case votes can only be called from a link object. Therefore parent represents Link
+    //And we are basically calling link.id
+    //Args is used when the value is passed in
+    //If you look at the endpoint votes in the schema it has no input
+}
+
+
 module.exports = {
     postedBy,
+    votes
 }
 
 //the postedBy is a function that links to the related table and retrieves the related user object to that instance

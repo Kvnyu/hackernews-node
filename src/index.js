@@ -9,7 +9,7 @@ const Mutation = require('./resolvers/mutation')
 const User = require('./resolvers/user')
 const Link = require('./resolvers/link')
 const Subscription = require('./resolvers/subscription')
-
+const Vote = require('./resolvers/vote')
 const {getUserId} = require('./utils')
 
 
@@ -24,11 +24,12 @@ let links = [{
 let idCount = links.length
 
 const resolvers = {
-   Query,
-   Mutation,
-   User,
-   Link,
-    Subscription
+    Query,
+    Mutation,
+    User,
+    Link,
+    Subscription,
+    Vote
 
 }
 
