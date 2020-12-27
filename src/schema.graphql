@@ -1,9 +1,14 @@
 type Query {
     info: String!
-    feed(filter: String!): [Link!]!
+    feed(filter: String, skip: Int, take: Int, orderBy:LinkOrderByInput): Feed!
+    #skip and take are not mandatory
     link(id: ID!): Link
 }
 
+type Feed {
+    links: [Link!]!
+    count: Int!
+}
 
 type Mutation {
     post(url: String!, description: String!) : Link!
@@ -46,6 +51,19 @@ type Vote{
     user: User!
 
 }
+#input type defines a set of input parameters.
+#Use when many mutations use the same input params
+input LinkOrderByInput{
+    description: Sort
+    url: Sort
+    createdAt: Sort
+}
+
+enum Sort{
+    asc
+    desc
+}
+
 #Steps in creating a new endpoint:
 #Add the required structures in prisma schema so that the db can store the data
 #Add the required endpoint in schema.graphql
