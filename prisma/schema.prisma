@@ -1,0 +1,45 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Link {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  description String
+  url         String
+  postedBy    User? @relation(fields: [postedById], references: [id])
+  postedById  Int?
+  votes       Vote[]
+}
+
+model User {
+  id    Int @id @default(autoincrement())
+  name  String
+  email String @unique
+  password  String
+  links Link[]
+}
+
+model Vote {
+  id    Int @id @default(autoincrement())
+  link  Link @relation(fields: [linkId], references: [id])
+  linkId Int
+  user User @relation(fields: [userId], references: [id])
+  userId Int
+
+  @@unique([linkId, userId])
+}
+
+//does links in user not ahve the @relation??
+//postedByMethod and links doesn't actually exist in the database, they are relation fields
+//postedbyId does exist in the database, it is the foreign key that connects link and user
+//postedByMethod defines the foreign key postedById in link that references table User
+
+
+//Prisma command methods: prisma migrate dev --preview-feature
+//npx prisma generate
